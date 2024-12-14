@@ -67,7 +67,8 @@ class MediaPlaybackService : Service() {
 
         val activityIntent = Intent(appContext, MainActivity::class.java)
         mediaSession!!.setSessionActivity(
-            PendingIntent.getActivity(appContext, 0, activityIntent, PendingIntent.FLAG_IMMUTABLE));
+            PendingIntent.getActivity(appContext, 0, activityIntent, PendingIntent.FLAG_IMMUTABLE)
+        );
 
         notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val mChannelName = getString(R.string.app_name)
@@ -152,8 +153,9 @@ class MediaPlaybackService : Service() {
         }
     }
 
-    private fun play(dif:Int = 1) {
+    private fun play(dif: Int = 1) {
         current_index = (current_index + dif) % 5
+        if (current_index == -1) current_index = 4
         val afd = this.resources.openRawResourceFd(songs[current_index])
 
         try {
@@ -246,7 +248,7 @@ class MediaPlaybackService : Service() {
         )
     }
 
-    companion object{
+    companion object {
         private var mediaPlaybackService: MediaPlaybackService? = null
         fun isPlaying() = mediaPlaybackService?.isPlaying ?: false
     }
