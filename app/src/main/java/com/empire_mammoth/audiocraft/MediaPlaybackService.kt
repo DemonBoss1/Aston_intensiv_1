@@ -1,6 +1,5 @@
 package com.empire_mammoth.audiocraft
 
-import com.empire_mammoth.audiocraft.R
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,14 +12,19 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import java.io.IOException
 
 
 class MediaPlaybackService : Service() {
+    val TAG = "MediaPlaybackService"
+
     var notificationManager: NotificationManager? = null
 
     private var mediaSession: MediaSessionCompat? = null
 
+    private lateinit var songs: IntArray
     private var mediaPlayer: MediaPlayer? = null
+    private var current_index: Int = 0
     private var isPlaying = false
 
     override fun onBind(intent: Intent): IBinder? {
@@ -113,12 +117,12 @@ class MediaPlaybackService : Service() {
     }
 
     private fun onSkipToNext() {
-        mediaPlayer?.reset()
+        play()
         updateNotification()
     }
 
     private fun onSkipToPrevious() {
-        mediaPlayer?.reset()
+        play(-1)
         updateNotification()
     }
 
@@ -134,7 +138,37 @@ class MediaPlaybackService : Service() {
 
 
     private fun initMediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.radio_tapok_gvardiya_petra)
+        songs = intArrayOf(
+            R.raw.radio_tapok_ataka_mertvecov_,
+            R.raw.radio_tapok_gvardiya_petra,
+            R.raw.radio_tapok_nochnye_vedmy,
+            R.raw.radio_tapok_petropavlovsk,
+            R.raw.radio_tapok_vysota_776
+        )
+
+        mediaPlayer = MediaPlayer.create(this, songs[0])
+        mediaPlayer?.setOnCompletionListener {
+            play()
+        }
+    }
+
+    private fun play(dif:Int = 1) {
+        current_index = (current_index + dif) % 5
+        val afd = this.resources.openRawResourceFd(songs[current_index])
+
+        try {
+            mediaPlayer!!.reset()
+            mediaPlayer!!.setDataSource(afd.fileDescriptor, afd.startOffset, afd.declaredLength)
+            mediaPlayer!!.prepare()
+            mediaPlayer!!.start()
+            afd.close()
+        } catch (e: IllegalArgumentException) {
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.message, e)
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.message, e)
+        } catch (e: IOException) {
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.message, e)
+        }
     }
 
     private fun isPlaying() = isPlaying
@@ -176,10 +210,10 @@ class MediaPlaybackService : Service() {
 
         val notification: Notification = NotificationCompat.Builder(this, "CHANNEL_ID")
             .setContentTitle(
-                "1"
+                "Radio Tapok"
             )
             .setContentText(
-                "2"
+                "Soung"
             )
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)
