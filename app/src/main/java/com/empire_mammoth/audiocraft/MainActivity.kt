@@ -45,21 +45,41 @@ class MainActivity : AppCompatActivity() {
                 if (mediaController != null) {
                     mediaController!!.transportControls.play()
                 }
+                val intent = Intent(this@MainActivity, MediaPlaybackService::class.java)
+                intent.setAction(PlaybackStateCompat.ACTION_PLAY.toString())
+                startService(intent)
+                playButton.visibility = View.GONE
+                pauseButton?.visibility = View.VISIBLE
             }
             pauseButton?.setOnClickListener {
                 if (mediaController != null) {
                     mediaController!!.transportControls.pause()
                 }
+                val intent = Intent(this@MainActivity, MediaPlaybackService::class.java)
+                intent.setAction(PlaybackStateCompat.ACTION_PAUSE.toString())
+                startService(intent)
+                playButton?.visibility = View.VISIBLE
+                pauseButton.visibility = View.GONE
             }
             nextButton?.setOnClickListener {
                 if (mediaController != null) {
                     mediaController!!.transportControls.skipToNext()
                 }
+                val intent = Intent(this@MainActivity, MediaPlaybackService::class.java)
+                intent.setAction(PlaybackStateCompat.ACTION_SKIP_TO_NEXT.toString())
+                startService(intent)
             }
             previousButton?.setOnClickListener {
                 if (mediaController != null) {
                     mediaController!!.transportControls.skipToPrevious()
                 }
+                val intent = Intent(this@MainActivity, MediaPlaybackService::class.java)
+                intent.setAction(PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS.toString())
+                startService(intent)
+            }
+            if(MediaPlaybackService.isPlaying()){
+                playButton?.visibility = View.GONE
+                pauseButton?.visibility = View.VISIBLE
             }
         }
     }

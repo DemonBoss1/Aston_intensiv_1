@@ -28,6 +28,8 @@ class MediaPlaybackService : Service() {
     }
 
     override fun onCreate() {
+        mediaPlaybackService = this
+
         mediaSession = MediaSessionCompat(this, "MediaSessionTag")
 
         mediaSession!!.setFlags(
@@ -211,6 +213,7 @@ class MediaPlaybackService : Service() {
     }
 
     companion object{
-        var mediaPlaybackService = null
+        private var mediaPlaybackService: MediaPlaybackService? = null
+        fun isPlaying() = mediaPlaybackService?.isPlaying ?: false
     }
 }

@@ -21,8 +21,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/playButton"
             android:layout_width="@dimen/audio_player_button_size"
             android:layout_height="@dimen/audio_player_button_size"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardElevation="0dp"
             app:cardCornerRadius="@dimen/audio_player_button_radius">
@@ -32,6 +36,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/baseline_play_circle_24" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/pauseButton"
+            android:layout_width="@dimen/audio_player_button_size"
+            android:layout_height="@dimen/audio_player_button_size"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/audio_player_button_radius">
+
+            <ImageView
+                android:id="@+id/imageViewPause"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/baseline_pause_circle_24" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -44,9 +66,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/previousButton"
                 android:layout_width="@dimen/audio_player_button_size"
                 android:layout_height="@dimen/audio_player_button_size"
                 android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="@dimen/audio_player_button_radius">
@@ -59,9 +85,13 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/nextButton"
                 android:layout_width="@dimen/audio_player_button_size"
                 android:layout_height="@dimen/audio_player_button_size"
                 android:layout_margin="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="@dimen/audio_player_button_radius">
